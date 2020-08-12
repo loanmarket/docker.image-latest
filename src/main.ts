@@ -39,9 +39,16 @@ async function run(): Promise<void> {
       }
     )
 
+    console.log(organization)
+    console.log(organization?.packages)
+    console.log(organization?.packages?.nodes[0])
+    console.log(organization?.packages?.nodes[0]?.versions)
+    console.log(organization?.packages?.nodes[0]?.versions?.nodes)
+    console.log(organization?.packages?.nodes[0]?.versions?.nodes?.version)
+
     const versions = organization?.packages?.nodes[0]?.versions?.nodes?.version
 
-    console.log(versions)
+    console.log('versions', versions)
     _.map(versions, function(e) {
       console.log(e)
       console.log(semver.validRange(e as string))
