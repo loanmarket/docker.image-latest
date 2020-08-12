@@ -1229,7 +1229,7 @@ function run() {
             const organisation = core.getInput('github_owner', { required: true });
             const repoName = core.getInput('image_name', { required: true });
             const token = core.getInput('github_token', { required: true });
-            const branch = core.getInput('github_baseref', { required: true });
+            const branch = core.getInput('github_head_ref', { required: true });
             const graphqlWithAuth = graphql_1.graphql.defaults({
                 headers: {
                     authorization: `token ${token}`
@@ -1270,10 +1270,9 @@ function run() {
                 semver.inc(latest, 'prerelease', branch);
             }
             if (latest == null) {
-                latest =
-                    _.first(_.filter(versions, function (e) {
-                        return semver.validRange(e);
-                    }));
+                latest = _.first(_.filter(versions, function (e) {
+                    return semver.validRange(e);
+                }));
                 latest = (_d = semver.inc(latest, 'patch')) !== null && _d !== void 0 ? _d : '0.0.1';
             }
             console.log(latest);
