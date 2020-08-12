@@ -8,6 +8,7 @@ async function run(): Promise<void> {
     const organisation: string = core.getInput('github_owner', {required: true})
     const repoName: string = core.getInput('image_name', {required: true})
     const token: string = core.getInput('github_token', {required: true})
+    const branch: string = core.getInput('github_baseref', {required: true})
     const graphqlWithAuth = graphql.defaults({
       headers: {
         authorization: `token ${token}`
@@ -41,33 +42,38 @@ async function run(): Promise<void> {
 
     const versions: string[] = []
 
-    console.log(organization)
-    console.log(organization?.packages)
-    console.log(organization?.packages?.nodes[0])
-    console.log(organization?.packages?.nodes[0]?.versions)
-    console.log(organization?.packages?.nodes[0]?.versions?.nodes)
-    console.log(organization?.packages?.nodes[0]?.versions?.nodes?.version)
     const nodes = organization?.packages?.nodes[0]?.versions?.nodes
 
     _.map(nodes, node => {
       versions.push(node.version)
     })
 
-    // const versions = organization?.packages?.nodes[0]?.versions?.nodes?.version
-
     console.log('versions', versions)
-    _.map(versions, function(e) {
-      console.log(e)
-      console.log(semver.validRange(e))
-    })
-    const latest =
-      _.first(
+    let latest!: string
+    if (branch) {
+      latest = _.first(
         _.filter(versions, function(e) {
-          console.log(e)
-          console.log(semver.validRange(e))
-          return semver.validRange(e)
+          return semver.validRange(e) && e.includes(branch)
         })
-      ) ?? '0.0.1'
+      ) as string
+
+      if (latest) {
+        const latestSplit = latest.split('-')
+        const ver = latestSplit[1] ? parseInt(latestSplit[1]) + 1 : 0
+        latest = `${latestSplit[0]}-${ver}`
+      } else {
+        latest = `${branch}-0`
+      }
+    }
+
+    if (latest == null) {
+      latest =
+        (_.first(
+          _.filter(versions, function(e) {
+            return semver.validRange(e)
+          })
+        ) as string) ?? '0.0.1'
+    }
     console.log(latest)
 
     core.setOutput('latest', latest)
