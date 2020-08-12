@@ -57,22 +57,16 @@ async function run(): Promise<void> {
         })
       ) as string
 
-      if (latest) {
-        const latestSplit = latest.split('-')
-        const ver = latestSplit[1] ? parseInt(latestSplit[1]) + 1 : 0
-        latest = `${latestSplit[0]}-${ver}`
-      } else {
-        latest = `${branch}-0`
-      }
+      semver.inc(latest, 'prerelease', branch)
     }
 
     if (latest == null) {
-      latest =
-        (_.first(
-          _.filter(versions, function(e) {
-            return semver.validRange(e)
-          })
-        ) as string) ?? '0.0.1'
+      latest = _.first(
+        _.filter(versions, function(e) {
+          return semver.validRange(e)
+        })
+      ) as string
+      latest = semver.inc(latest, 'patch') ?? '0.0.1'
     }
     console.log(latest)
 

@@ -1264,23 +1264,17 @@ function run() {
             console.log('versions', versions);
             let latest;
             if (branch) {
-                latest =
-                    _.first(_.filter(versions, function (e) {
-                        return semver.validRange(e) && e.includes(branch);
-                    }));
-                if (latest) {
-                    const latestSplit = latest.split('-');
-                    const ver = latestSplit[1] ? parseInt(latestSplit[1]) + 1 : 0;
-                    latest = `${latestSplit[0]}-${ver}`;
-                }
-                else {
-                    latest = `${branch}-0`;
-                }
+                latest = _.first(_.filter(versions, function (e) {
+                    return semver.validRange(e) && e.includes(branch);
+                }));
+                semver.inc(latest, 'prerelease', branch);
             }
             if (latest == null) {
-                latest = (_d = _.first(_.filter(versions, function (e) {
-                    return semver.validRange(e);
-                }))) !== null && _d !== void 0 ? _d : '0.0.1';
+                latest =
+                    _.first(_.filter(versions, function (e) {
+                        return semver.validRange(e);
+                    }));
+                latest = (_d = semver.inc(latest, 'patch')) !== null && _d !== void 0 ? _d : '0.0.1';
             }
             console.log(latest);
             core.setOutput('latest', latest);
