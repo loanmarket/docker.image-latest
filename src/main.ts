@@ -38,7 +38,7 @@ async function run(): Promise<void> {
         repoName
       }
     )
-    console.log(JSON.stringify(organization.packages))
+    console.log(JSON.stringify(organization))
     const versions = organization.packages.nodes.versions.nodes.version
     const latest = _.first(
       _.remove(versions, function(e) {
