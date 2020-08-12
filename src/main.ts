@@ -57,7 +57,7 @@ async function run(): Promise<void> {
         })
       ) as string
 
-      semver.inc(latest, 'prerelease', branch)
+      latest = semver.inc(latest, 'prerelease', branch) as string
     }
 
     if (latest == null) {

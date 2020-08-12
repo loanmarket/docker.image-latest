@@ -1267,7 +1267,7 @@ function run() {
                 latest = _.first(_.filter(versions, function (e) {
                     return semver.validRange(e) && e.includes(branch);
                 }));
-                semver.inc(latest, 'prerelease', branch);
+                latest = semver.inc(latest, 'prerelease', branch);
             }
             if (latest == null) {
                 latest = _.first(_.filter(versions, function (e) {
