@@ -1254,7 +1254,7 @@ function run() {
                 organisation,
                 repoName
             });
-            console.log(JSON.stringify(organization));
+            console.log(JSON.stringify(organization.packages));
             const versions = organization.packages.nodes.versions.nodes.version;
             const latest = _.first(_.remove(versions, function (e) {
                 return semver.validRange(e);
