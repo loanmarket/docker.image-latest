@@ -39,14 +39,14 @@ async function run(): Promise<void> {
       }
     )
 
-    const versions =
-      organization?.packages?.nodes[0]?.versions?.nodes?.version ?? '0.0.1'
+    const versions = organization?.packages?.nodes[0]?.versions?.nodes?.version
 
-    const latest = _.first(
-      _.filter(versions, function(e) {
-        return semver.validRange(e as string)
-      })
-    )
+    const latest =
+      _.first(
+        _.filter(versions, function(e) {
+          return semver.validRange(e as string)
+        })
+      ) ?? '0.0.1'
     console.log(latest)
 
     core.setOutput('latest', latest)
