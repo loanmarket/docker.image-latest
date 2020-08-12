@@ -1223,7 +1223,7 @@ const graphql_1 = __webpack_require__(898);
 const _ = __importStar(__webpack_require__(557));
 const semver = __importStar(__webpack_require__(876));
 function run() {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const organisation = core.getInput('github_owner', { required: true });
@@ -1255,23 +1255,28 @@ function run() {
                 organisation,
                 repoName
             });
+            const versions = [];
             console.log(organization);
             console.log(organization === null || organization === void 0 ? void 0 : organization.packages);
             console.log((_a = organization === null || organization === void 0 ? void 0 : organization.packages) === null || _a === void 0 ? void 0 : _a.nodes[0]);
             console.log((_c = (_b = organization === null || organization === void 0 ? void 0 : organization.packages) === null || _b === void 0 ? void 0 : _b.nodes[0]) === null || _c === void 0 ? void 0 : _c.versions);
             console.log((_f = (_e = (_d = organization === null || organization === void 0 ? void 0 : organization.packages) === null || _d === void 0 ? void 0 : _d.nodes[0]) === null || _e === void 0 ? void 0 : _e.versions) === null || _f === void 0 ? void 0 : _f.nodes);
             console.log((_k = (_j = (_h = (_g = organization === null || organization === void 0 ? void 0 : organization.packages) === null || _g === void 0 ? void 0 : _g.nodes[0]) === null || _h === void 0 ? void 0 : _h.versions) === null || _j === void 0 ? void 0 : _j.nodes) === null || _k === void 0 ? void 0 : _k.version);
-            const versions = (_p = (_o = (_m = (_l = organization === null || organization === void 0 ? void 0 : organization.packages) === null || _l === void 0 ? void 0 : _l.nodes[0]) === null || _m === void 0 ? void 0 : _m.versions) === null || _o === void 0 ? void 0 : _o.nodes) === null || _p === void 0 ? void 0 : _p.version;
-            console.log("versions", versions);
+            const nodes = (_o = (_m = (_l = organization === null || organization === void 0 ? void 0 : organization.packages) === null || _l === void 0 ? void 0 : _l.nodes[0]) === null || _m === void 0 ? void 0 : _m.versions) === null || _o === void 0 ? void 0 : _o.nodes;
+            _.map(nodes, (node) => {
+                versions.push(node.version);
+            });
+            // const versions = organization?.packages?.nodes[0]?.versions?.nodes?.version
+            console.log('versions', versions);
             _.map(versions, function (e) {
                 console.log(e);
                 console.log(semver.validRange(e));
             });
-            const latest = (_q = _.first(_.filter(versions, function (e) {
+            const latest = (_p = _.first(_.filter(versions, function (e) {
                 console.log(e);
                 console.log(semver.validRange(e));
                 return semver.validRange(e);
-            }))) !== null && _q !== void 0 ? _q : '0.0.1';
+            }))) !== null && _p !== void 0 ? _p : '0.0.1';
             console.log(latest);
             core.setOutput('latest', latest);
             core.exportVariable('latest', latest);

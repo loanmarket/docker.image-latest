@@ -39,26 +39,33 @@ async function run(): Promise<void> {
       }
     )
 
+    const versions: string[] = []
+
     console.log(organization)
     console.log(organization?.packages)
     console.log(organization?.packages?.nodes[0])
     console.log(organization?.packages?.nodes[0]?.versions)
     console.log(organization?.packages?.nodes[0]?.versions?.nodes)
     console.log(organization?.packages?.nodes[0]?.versions?.nodes?.version)
+    const nodes = organization?.packages?.nodes[0]?.versions?.nodes
 
-    const versions = organization?.packages?.nodes[0]?.versions?.nodes?.version
+    _.map(nodes, node => {
+      versions.push(node.version)
+    })
+
+    // const versions = organization?.packages?.nodes[0]?.versions?.nodes?.version
 
     console.log('versions', versions)
     _.map(versions, function(e) {
       console.log(e)
-      console.log(semver.validRange(e as string))
+      console.log(semver.validRange(e))
     })
     const latest =
       _.first(
         _.filter(versions, function(e) {
           console.log(e)
-          console.log(semver.validRange(e as string))
-          return semver.validRange(e as string)
+          console.log(semver.validRange(e))
+          return semver.validRange(e)
         })
       ) ?? '0.0.1'
     console.log(latest)
