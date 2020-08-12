@@ -38,21 +38,16 @@ async function run(): Promise<void> {
         repoName
       }
     )
-    console.log(JSON.stringify(organization))
-    console.log(JSON.stringify(organization.packages))
-    console.log(JSON.stringify(organization.packages.nodes[0]))
-    console.log(JSON.stringify(organization.packages.nodes[0].versions))
-    console.log(JSON.stringify(organization.packages.nodes[0].versions.nodes))
-    console.log(
-      JSON.stringify(organization.packages.nodes[0].versions.nodes.version)
-    )
+
     const versions =
       organization?.packages?.nodes[0]?.versions?.nodes?.version ?? '0.0.1'
+
     const latest = _.first(
       _.filter(versions, function(e) {
         return semver.validRange(e as string)
       })
     )
+    console.log(latest)
 
     core.setOutput('latest', latest)
     core.exportVariable('latest', latest)

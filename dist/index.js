@@ -1255,16 +1255,11 @@ function run() {
                 organisation,
                 repoName
             });
-            console.log(JSON.stringify(organization));
-            console.log(JSON.stringify(organization.packages));
-            console.log(JSON.stringify(organization.packages.nodes[0]));
-            console.log(JSON.stringify(organization.packages.nodes[0].versions));
-            console.log(JSON.stringify(organization.packages.nodes[0].versions.nodes));
-            console.log(JSON.stringify(organization.packages.nodes[0].versions.nodes.version));
             const versions = (_e = (_d = (_c = (_b = (_a = organization === null || organization === void 0 ? void 0 : organization.packages) === null || _a === void 0 ? void 0 : _a.nodes[0]) === null || _b === void 0 ? void 0 : _b.versions) === null || _c === void 0 ? void 0 : _c.nodes) === null || _d === void 0 ? void 0 : _d.version) !== null && _e !== void 0 ? _e : '0.0.1';
             const latest = _.first(_.filter(versions, function (e) {
                 return semver.validRange(e);
             }));
+            console.log(latest);
             core.setOutput('latest', latest);
             core.exportVariable('latest', latest);
         }
