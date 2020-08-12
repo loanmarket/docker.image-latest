@@ -49,7 +49,7 @@ async function run(): Promise<void> {
     const versions =
       organization?.packages?.nodes[0]?.versions?.nodes?.version ?? '0.0.1'
     const latest = _.first(
-      _.remove(versions, function(e) {
+      _.filter(versions, function(e) {
         return semver.validRange(e as string)
       })
     )
