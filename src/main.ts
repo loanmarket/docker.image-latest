@@ -41,6 +41,11 @@ async function run(): Promise<void> {
 
     const versions = organization?.packages?.nodes[0]?.versions?.nodes?.version
 
+    console.log(versions)
+    _.map(versions, function(e) {
+      console.log(e)
+      console.log(semver.validRange(e as string))
+    })
     const latest =
       _.first(
         _.filter(versions, function(e) {
