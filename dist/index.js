@@ -1225,7 +1225,7 @@ const semver = __importStar(__webpack_require__(876));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const owner = core.getInput('github_owner', { required: true });
+            const organisation = core.getInput('github_owner', { required: true });
             const repoName = core.getInput('image_name', { required: true });
             const token = core.getInput('github_token', { required: true });
             const graphqlWithAuth = graphql_1.graphql.defaults({
@@ -1252,7 +1252,7 @@ function run() {
           }
         }
       }`, {
-                owner,
+                organisation,
                 repoName
             });
             console.log(JSON.stringify(getLatest));

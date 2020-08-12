@@ -5,7 +5,7 @@ import * as semver from 'semver'
 
 async function run(): Promise<void> {
   try {
-    const owner: string = core.getInput('github_owner', {required: true})
+    const organisation: string = core.getInput('github_owner', {required: true})
     const repoName: string = core.getInput('image_name', {required: true})
     const token: string = core.getInput('github_token', {required: true})
     const graphqlWithAuth = graphql.defaults({
@@ -35,7 +35,7 @@ async function run(): Promise<void> {
         }
       }`,
       {
-        owner,
+        organisation,
         repoName
       }
     )
