@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import {graphql} from '@octokit/graphql'
-// import * as _ from 'lodash'
-// import * as semver from 'semver'
+import * as _ from 'lodash'
+import * as semver from 'semver'
 
 async function run(): Promise<void> {
   try {
@@ -31,7 +31,6 @@ async function run(): Promise<void> {
                 version
               }
             }
-            totalCount
           }
         }
       }`,
@@ -41,17 +40,15 @@ async function run(): Promise<void> {
       }
     )
     console.log(JSON.stringify(getLatest))
-    // axios
-    //   .get(`https://hub.docker.com/v2/repositories/${imageName}/tags/`)
-    //   .then(response => {
-    //     const latest = _.last(
-    //       _.remove(_.sortBy(_.map(response.data.results, 'name')), function(e) {
-    //         return semver.validRange(e)
-    //       })
-    //     )
-    //     core.setOutput('latest', latest)
-    //     core.exportVariable('latest', latest)
-    //   })
+    const versions =
+      getLatest.organization.packages.nodes.versions.nodes.version
+    const latest = _.first(
+      _.remove(versions, function(e) {
+        return semver.validRange(e as string)
+      })
+    )
+    core.setOutput('latest', latest)
+    core.exportVariable('latest', latest)
   } catch (error) {
     core.setFailed(error.message)
   }
