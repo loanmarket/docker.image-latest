@@ -40,10 +40,14 @@ async function run(): Promise<void> {
     )
     console.log(JSON.stringify(organization))
     console.log(JSON.stringify(organization.packages))
-    console.log(JSON.stringify(organization.packages.versions))
-    console.log(JSON.stringify(organization.packages.versions.nodes))
-    console.log(JSON.stringify(organization.packages.versions.nodes.version))
-    const versions = organization.packages.nodes.versions.nodes.version
+    console.log(JSON.stringify(organization.packages.nodes))
+    console.log(JSON.stringify(organization.packages.nodes.versions))
+    console.log(JSON.stringify(organization.packages.nodes.versions.nodes))
+    console.log(
+      JSON.stringify(organization.packages.nodes.versions.nodes.version)
+    )
+    const versions =
+      organization?.packages?.nodes?.versions?.nodes?.version ?? '0.0.1'
     const latest = _.first(
       _.remove(versions, function(e) {
         return semver.validRange(e as string)

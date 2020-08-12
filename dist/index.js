@@ -1223,6 +1223,7 @@ const graphql_1 = __webpack_require__(898);
 const _ = __importStar(__webpack_require__(557));
 const semver = __importStar(__webpack_require__(876));
 function run() {
+    var _a, _b, _c, _d, _e;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const organisation = core.getInput('github_owner', { required: true });
@@ -1256,10 +1257,11 @@ function run() {
             });
             console.log(JSON.stringify(organization));
             console.log(JSON.stringify(organization.packages));
-            console.log(JSON.stringify(organization.packages.versions));
-            console.log(JSON.stringify(organization.packages.versions.nodes));
-            console.log(JSON.stringify(organization.packages.versions.nodes.version));
-            const versions = organization.packages.nodes.versions.nodes.version;
+            console.log(JSON.stringify(organization.packages.nodes));
+            console.log(JSON.stringify(organization.packages.nodes.versions));
+            console.log(JSON.stringify(organization.packages.nodes.versions.nodes));
+            console.log(JSON.stringify(organization.packages.nodes.versions.nodes.version));
+            const versions = (_e = (_d = (_c = (_b = (_a = organization === null || organization === void 0 ? void 0 : organization.packages) === null || _a === void 0 ? void 0 : _a.nodes) === null || _b === void 0 ? void 0 : _b.versions) === null || _c === void 0 ? void 0 : _c.nodes) === null || _d === void 0 ? void 0 : _d.version) !== null && _e !== void 0 ? _e : "0.0.1";
             const latest = _.first(_.remove(versions, function (e) {
                 return semver.validRange(e);
             }));
