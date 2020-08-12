@@ -45,7 +45,8 @@ async function run(): Promise<void> {
       _.first(
         _.filter(versions, function(e) {
           console.log(e)
-          return !semver.validRange(e as string)
+          console.log(semver.validRange(e as string))
+          return semver.validRange(e as string)
         })
       ) ?? '0.0.1'
     console.log(latest)
