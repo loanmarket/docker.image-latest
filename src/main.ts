@@ -14,9 +14,8 @@ async function run(): Promise<void> {
       }
     })
 
-    const {getLatest} = await graphqlWithAuth(
-      `
-      query getLatest($organisation: String!, $repoName: String!) {
+    const {organization} = await graphqlWithAuth(
+      `query getLatest($organisation: String!, $repoName: String!) {
         organization(login: $organisation) {
           packages(first: 100, names: [$repoName]) {
             nodes {
@@ -39,9 +38,8 @@ async function run(): Promise<void> {
         repoName
       }
     )
-    console.log(JSON.stringify(getLatest))
-    const versions =
-      getLatest.organization.packages.nodes.versions.nodes.version
+    console.log(JSON.stringify(organization))
+    const versions = organization.packages.nodes.versions.nodes.version
     const latest = _.first(
       _.remove(versions, function(e) {
         return semver.validRange(e as string)
