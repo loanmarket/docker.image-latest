@@ -1229,7 +1229,7 @@ function run() {
             const organisation = core.getInput('github_owner', { required: true });
             const repoName = core.getInput('image_name', { required: true });
             const token = core.getInput('github_token', { required: true });
-            const branch = core.getInput('github_head_ref', { required: true });
+            const branch = core.getInput('github_head_ref', { required: false });
             const graphqlWithAuth = graphql_1.graphql.defaults({
                 headers: {
                     authorization: `token ${token}`

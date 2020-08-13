@@ -8,7 +8,7 @@ async function run(): Promise<void> {
     const organisation: string = core.getInput('github_owner', {required: true})
     const repoName: string = core.getInput('image_name', {required: true})
     const token: string = core.getInput('github_token', {required: true})
-    const branch: string = core.getInput('github_head_ref', {required: true})
+    const branch: string = core.getInput('github_head_ref', {required: false})
     const graphqlWithAuth = graphql.defaults({
       headers: {
         authorization: `token ${token}`
