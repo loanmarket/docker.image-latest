@@ -50,6 +50,15 @@ async function run(): Promise<void> {
 
     console.log('versions', versions)
     let latest!: string
+
+    // get latest clean
+    const latestClean = _.first(
+      _.filter(versions, function(e) {
+        return semver.validRange(e) && !e.includes('-')
+      })
+    ) as string
+
+    // get branch
     if (branch) {
       latest = _.first(
         _.filter(versions, function(e) {
@@ -57,17 +66,14 @@ async function run(): Promise<void> {
         })
       ) as string
 
+      if (latest == null) {
+        latest = latestClean
+      }
       latest = semver.inc(latest, 'prerelease', branch) as string
+    } else {
+      latest = semver.inc(latestClean, 'patch') ?? '0.0.1'
     }
 
-    if (latest == null) {
-      latest = _.first(
-        _.filter(versions, function(e) {
-          return semver.validRange(e)
-        })
-      ) as string
-      latest = semver.inc(latest, 'patch') ?? '0.0.1'
-    }
     console.log(latest)
 
     core.setOutput('latest', latest)

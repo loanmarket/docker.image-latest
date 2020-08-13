@@ -1263,17 +1263,22 @@ function run() {
             });
             console.log('versions', versions);
             let latest;
+            // get latest clean
+            const latestClean = _.first(_.filter(versions, function (e) {
+                return semver.validRange(e) && !e.includes('-');
+            }));
+            // get branch
             if (branch) {
                 latest = _.first(_.filter(versions, function (e) {
                     return semver.validRange(e) && e.includes(branch);
                 }));
+                if (latest == null) {
+                    latest = latestClean;
+                }
                 latest = semver.inc(latest, 'prerelease', branch);
             }
-            if (latest == null) {
-                latest = _.first(_.filter(versions, function (e) {
-                    return semver.validRange(e);
-                }));
-                latest = (_d = semver.inc(latest, 'patch')) !== null && _d !== void 0 ? _d : '0.0.1';
+            else {
+                latest = (_d = semver.inc(latestClean, 'patch')) !== null && _d !== void 0 ? _d : '0.0.1';
             }
             console.log(latest);
             core.setOutput('latest', latest);
