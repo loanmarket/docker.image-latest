@@ -3,19 +3,31 @@ import {graphql} from '@octokit/graphql'
 import * as _ from 'lodash'
 import * as semver from 'semver'
 
+export const cleanBranchName = (branchName: string): string => {
+  const replacementName = branchName.replace(/\//g, '-')
+  const version = semver.coerce(branchName)?.version
+  if (version) {
+    const regexString = `-?${version}`
+    const regex = new RegExp(regexString)
+    return replacementName.replace(regex, '')
+  }
+  return replacementName
+}
+
 async function run(): Promise<void> {
   try {
     const organisation: string = core.getInput('github_owner', {required: true})
     const repoName: string = core.getInput('image_name', {required: true})
     const token: string = core.getInput('github_token', {required: true})
-    const branch: string = core
-      .getInput('github_head_ref', {required: false})
-      .replace(/\//g, '-')
+    let branch: string = core.getInput('github_head_ref', {required: false})
+
     const graphqlWithAuth = graphql.defaults({
       headers: {
         authorization: `token ${token}`
       }
     })
+
+    branch = cleanBranchName(branch)
 
     const {organization} = await graphqlWithAuth(
       `query getLatest($organisation: String!, $repoName: String!) {

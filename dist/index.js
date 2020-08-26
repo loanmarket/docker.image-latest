@@ -1218,10 +1218,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.cleanBranchName = void 0;
 const core = __importStar(__webpack_require__(470));
 const graphql_1 = __webpack_require__(898);
 const _ = __importStar(__webpack_require__(557));
 const semver = __importStar(__webpack_require__(876));
+exports.cleanBranchName = (branchName) => {
+    var _a;
+    const replacementName = branchName.replace(/\//g, '-');
+    const version = (_a = semver.coerce(branchName)) === null || _a === void 0 ? void 0 : _a.version;
+    if (version) {
+        const regexString = `-?${version}`;
+        const regex = new RegExp(regexString);
+        return replacementName.replace(regex, '');
+    }
+    return replacementName;
+};
 function run() {
     var _a, _b, _c, _d;
     return __awaiter(this, void 0, void 0, function* () {
@@ -1229,12 +1241,14 @@ function run() {
             const organisation = core.getInput('github_owner', { required: true });
             const repoName = core.getInput('image_name', { required: true });
             const token = core.getInput('github_token', { required: true });
-            const branch = core.getInput('github_head_ref', { required: false }).replace(/\//g, "-");
+            let branch = core
+                .getInput('github_head_ref', { required: false });
             const graphqlWithAuth = graphql_1.graphql.defaults({
                 headers: {
                     authorization: `token ${token}`
                 }
             });
+            branch = exports.cleanBranchName(branch);
             const { organization } = yield graphqlWithAuth(`query getLatest($organisation: String!, $repoName: String!) {
         organization(login: $organisation) {
           packages(first: 100, names: [$repoName]) {
