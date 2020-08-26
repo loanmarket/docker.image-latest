@@ -4,7 +4,7 @@ import * as _ from 'lodash'
 import * as semver from 'semver'
 
 export const cleanBranchName = (branchName: string): string => {
-  const replacementName = branchName.replace(/\//g, '-')
+  const replacementName = branchName.replace(/\//g, '-').replace(/\./g, '-')
   const version = semver.coerce(branchName)?.version
   if (version) {
     const regexString = `-?${version}`

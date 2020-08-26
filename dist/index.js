@@ -1225,7 +1225,7 @@ const _ = __importStar(__webpack_require__(557));
 const semver = __importStar(__webpack_require__(876));
 exports.cleanBranchName = (branchName) => {
     var _a;
-    const replacementName = branchName.replace(/\//g, '-');
+    const replacementName = branchName.replace(/\//g, '-').replace(/\./g, '-');
     const version = (_a = semver.coerce(branchName)) === null || _a === void 0 ? void 0 : _a.version;
     if (version) {
         const regexString = `-?${version}`;
@@ -1241,8 +1241,7 @@ function run() {
             const organisation = core.getInput('github_owner', { required: true });
             const repoName = core.getInput('image_name', { required: true });
             const token = core.getInput('github_token', { required: true });
-            let branch = core
-                .getInput('github_head_ref', { required: false });
+            let branch = core.getInput('github_head_ref', { required: false });
             const graphqlWithAuth = graphql_1.graphql.defaults({
                 headers: {
                     authorization: `token ${token}`
